@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +18,12 @@ namespace Pharmacy_Management___Sales_API.Control
         {
             this.saleServies = saleServies;
         }
-        [HttpPost("AddSale")]
+        [HttpPost ]
         [Authorize(Roles ="Admin")]
         public async Task<ActionResult> AddNewSale([FromBody]AddSaleDto add)
         {
             var result = await saleServies.AddNewSale(add);
-            return Ok(new Compabel<object>
+            return StatusCode(StatusCodes.Status201Created, new Compabel<object>
             {
                 satas="Success",
                 success=true,
@@ -34,13 +34,8 @@ namespace Pharmacy_Management___Sales_API.Control
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> RemoveSale([FromRoute]int Id)
         {
-            var result = await saleServies.Remove(Id);
-            return Ok(new Compabel<object>
-            {
-                satas = "Success",
-                success = true,
-                t = result
-            });
+            await saleServies.Remove(Id);
+            return NoContent( );
         }
         [HttpPut("{Id}")]
         [Authorize(Roles = "Admin")]
