@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pharmacy_Management___Sales_API.Configration;
@@ -23,7 +23,7 @@ namespace Pharmacy_Management___Sales_API.Control
         public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenDto refresh)
         {
             var result = await servies.RefreshToken(refresh);
-            return Ok(new Compabel<RefreshTokenResponse>
+            return Ok(new  Compabel<RefreshTokenResponse>
             {
 
                 satas = "Success",
@@ -31,11 +31,11 @@ namespace Pharmacy_Management___Sales_API.Control
                 success = true
             });
         }
-        [HttpPost("AddUser")]
+        [HttpPost ]
         public async Task<ActionResult> AddUser([FromBody]UserDtoCreatAccount user)
         {
             var result = await servies.AddNewUser(user);
-            return Ok(new Compabel<UserDtoCreatAccountReplay>
+            return  StatusCode(StatusCodes.Status201Created,new Compabel<UserDtoCreatAccountReplay>
             {
 
                 satas = "Success",
@@ -43,7 +43,7 @@ namespace Pharmacy_Management___Sales_API.Control
                 success = true
             });
         }
-        [HttpPost("SingIn")]
+        [HttpPost("SignIn")]
         public async Task<ActionResult> SignIn([FromBody]UserLogin user)
         { 
             var result = await servies.SignIn(user);
@@ -59,14 +59,8 @@ namespace Pharmacy_Management___Sales_API.Control
         [HttpDelete("{Id}")]
         public async Task<ActionResult> Delete([FromRoute]int Id)
         {
-            var result = await servies.RemoveUser(Id);
-            return Ok(new Compabel<object>
-            {
-
-                satas = "Success",
-                t = result,
-                success = true
-            });
+           await servies.RemoveUser(Id);
+            return NoContent(); 
         }
         [Authorize(Roles = "Admin")]
         [HttpPut("{Id}")]
