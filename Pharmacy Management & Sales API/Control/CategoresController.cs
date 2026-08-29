@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +18,12 @@ namespace Pharmacy_Management___Sales_API.Control
         {
             this.categores = categores;
         }
-        [HttpPost("AddCategores")]
+        [HttpPost ]
      
         public async Task<ActionResult> AddCategores([FromBody]AddCategoresDto add)
         {
             var result = await categores.AddNewCategores(add);
-            return Ok(
-
-               new Compabel<object>
+            return StatusCode(StatusCodes.Status201Created, new Compabel<object>
                {
                    satas = "Success",
                    success=true,
@@ -38,16 +36,8 @@ namespace Pharmacy_Management___Sales_API.Control
         [Authorize(Roles ="Admin")]
         public async Task<ActionResult> RemoveCatgores([FromRoute] int id)
         {
-            var result = await categores.RemoveCatgores(id);
-            return Ok(
-
-               new Compabel<object>
-               {
-                   satas = "Success",
-                   success = true,
-                   t = result
-
-               }
+     await categores.RemoveCatgores(id);
+            return NoContent(
                 );
         }
         [HttpPut("{id}")]
