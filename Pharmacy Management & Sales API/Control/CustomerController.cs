@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pharmacy_Management___Sales_API.Configration;
@@ -23,7 +23,7 @@ namespace Pharmacy_Management___Sales_API.Control
         public async Task<ActionResult> AddCustomerDto([FromBody] AddCustomerDto add)
         {
             var result = await customer.AddCustomerDto(add);
-            return Ok(
+            return StatusCode(StatusCodes.Status201Created,
 
                new Compabel<object>
                {
@@ -38,17 +38,8 @@ namespace Pharmacy_Management___Sales_API.Control
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> RemoveCustomer([FromRoute] int id)
         {
-            var result = await customer.RemoveCustomer(id);
-            return Ok(
-
-               new Compabel<object>
-               {
-                   satas = "Success",
-                   success = true,
-                   t = result
-
-               }
-                );
+              await customer.RemoveCustomer(id);
+            return NoContent();
         }
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
