@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -20,12 +20,12 @@ namespace Pharmacy_Management___Sales_API.Control
             this.products = products;
         }
 
-        [HttpPost("AddProduct")]
+        [HttpPost ]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> AddProduct([FromBody] AddDtoProduct add)
         {
             var result = await products.AddNewProduct(add);
-            return Ok(new Compabel<object>
+            return StatusCode(StatusCodes.Status201Created, new Compabel<object>
             {
                 satas = "Success",
                 success = true,
@@ -51,13 +51,8 @@ namespace Pharmacy_Management___Sales_API.Control
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> RemoveAysnc(  [FromRoute] int id)
         {
-            var result = await products.RemoveAysnc(  id);
-            return Ok(new Compabel<object>
-            {
-                satas = "Success",
-                success = true,
-                t = result
-            });
+            await products.RemoveAysnc(  id);
+            return NoContent();
         }
     }
 }
